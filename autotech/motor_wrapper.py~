@@ -1,0 +1,28 @@
+import serial
+import os
+
+
+Speed_Limit=255
+Angle_Limit=90
+
+
+def find_path_micro():
+    """Find the USB port and initialyse it on self.path_micro"""
+    print("Try to find USB path")
+    for path in os.listdir("/dev"):
+        if path[:-1] == "ttyUSB":
+            path_micro=os.path.join("/dev/", path)
+            print("USB path found : {}".format(path_micro))
+            return
+        print("Error : USB path not found")
+
+path_micro=find_path_micro()
+
+def changePWMSpeed(linearSpeed):
+    order_type=98
+    arg=min(abs(linearSpeed), Speed_Limit)
+    sendOrder(order_type,arg)
+
+def changePWMDir(anglePos):
+    order_type=97
+    arg=(min(abs(angularPos),Angle_Limit))
